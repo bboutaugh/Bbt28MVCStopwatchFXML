@@ -6,6 +6,7 @@
 package bbt28mvcstopwatchfxml;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -31,27 +32,15 @@ public class Bbt28MVCStopwatchController implements Initializable
 {
 Bbt28MVCStopwatch_AnalogModel analogModel = new Bbt28MVCStopwatch_AnalogModel();
 Bbt28MVCStopwatch_DigitalModel digitalModel = new Bbt28MVCStopwatch_DigitalModel();
+int recordNum=0;
+boolean recordCheck1 = true;
+boolean recordCheck2 = false;
+boolean recordCheck3 = false;
 
 public void Bbt28MVCStopwatchController()
 {
     
 }
-
-//Analog Instances//------------------------------------------------------------
-KeyFrame aKeyFrame = analogModel.getAnalogKeyFrame();
-Timeline aTimeline = analogModel.getAnalogTimeline();
-Double aSecondsElapsed = analogModel.getaAngleDeltaPerSecond();
-Double aTimeSeconds  = analogModel.getaTimeInSeconds();
-Double aAngleDelta = analogModel.getaAngleDeltaPerSecond();
-//------------------------------------------------------------------------------
-
-//Digital Instances//-----------------------------------------------------------
-KeyFrame dKeyFrame = digitalModel.getDigitalKeyFrame();
-Timeline dTimeline = digitalModel.getDigitalTimeline();
-Double dSecondsElapsed = digitalModel.getdAngleDeltaPerSecond();
-Double dTimeSeconds  = digitalModel.getdTimeInSeconds();
-Double dngleDelta = digitalModel.getdAngleDeltaPerSecond();
-//------------------------------------------------------------------------------
 
 
  //Containers//-----------------------------------------------------------------
@@ -112,6 +101,7 @@ public void startButtonAction(ActionEvent event)
         digitalModel.digitalTimeline.stop();
         analogModel.analogTimeline.stop();
         analogModel.setAnalogIsRunning(false);
+        digitalModel.setDigitalIsRunning(false);
         }
         else
         {
@@ -121,12 +111,55 @@ public void startButtonAction(ActionEvent event)
         analogModel.analogTimeline.play();
         digitalModel.digitalTimeline.play();
         analogModel.setAnalogIsRunning(true);
+        digitalModel.setDigitalIsRunning(true);
         }
 }
 
 public void recordButtonAction(ActionEvent event)
 {
-    
+   
+ if(analogModel.isAnalogIsRunning())
+        {
+        //Record Action
+       
+        if(recordCheck1)
+        {
+        recordNum++;
+        record1Label.setText("test1");
+        recordCheck1 = false;
+        recordCheck2 = true;
+        recordCheck3 = false;
+        }
+        else if(recordCheck2)
+        {
+            recordNum++;
+            record2Label.setText("test2");
+            recordCheck2 = false;
+            recordCheck1 = false;
+            recordCheck3 = true;
+        }
+        else if(recordCheck3)
+        {
+            recordNum++;
+            record3Label.setText("test3");
+            recordCheck3 = false;
+            recordCheck2 = false;
+            recordCheck1 = true;
+        }
+        }//End if else statement
+        else
+        {
+        //Reset Action
+        record1Label.setText("--.--:--");
+        record2Label.setText("--.--:--");
+        record3Label.setText("--.--:--");
+        digitalDisplayLabel.setText("--.--:--");
+        recordNum = 0;
+        recordCheck1=true;
+        recordCheck2=false;
+        recordCheck3=false;
+        }
+
 }
     @Override
     public void initialize(URL url, ResourceBundle rb) 

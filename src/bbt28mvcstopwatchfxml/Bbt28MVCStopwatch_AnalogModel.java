@@ -22,8 +22,8 @@ public class Bbt28MVCStopwatch_AnalogModel
 {
     
    // Bbt28MVCStopwatchController aController = new Bbt28MVCStopwatchController();
-    private double aSecondsElapsed = 1.0;
-    private double aTimeInSeconds = 1.0;
+    private double aSecondsElapsed = 0.0;
+    private double aTimeInSeconds = 0.001;
     private double aAngleDeltaPerSecond = 6.0;
     private boolean analogIsRunning = false;
     public Timeline analogTimeline;
@@ -34,11 +34,7 @@ public class Bbt28MVCStopwatch_AnalogModel
 
     public Bbt28MVCStopwatch_AnalogModel() 
     {
-        this.aSecondsElapsed = aSecondsElapsed;
-        this.aTimeInSeconds = aTimeInSeconds;
-        this.aAngleDeltaPerSecond = aAngleDeltaPerSecond;
-        this.analogTimeline = analogTimeline;
-        this.analogKeyFrame = analogKeyFrame;
+   
     }
 
     public double getaSecondsElapsed() 
@@ -98,8 +94,6 @@ public class Bbt28MVCStopwatch_AnalogModel
     public void setAnalogIsRunning(boolean analogIsRunning) {
         this.analogIsRunning = analogIsRunning;
     }
-
-    
     
 public void updateAnalog(ImageView handImage)
 {

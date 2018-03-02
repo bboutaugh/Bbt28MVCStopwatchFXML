@@ -19,55 +19,55 @@ import javafx.util.Duration;
 public class Bbt28MVCStopwatch_DigitalModel 
 {
    
-    private double dSecondsElapsed;
-    private double dTimeInSeconds;
-    private double dAngleDeltaPerSecond;
+    private double dSecondsElapsed = 0.0;
+    private double dTimeInSeconds = 0.001;
+    /*Elapsed Seconds = n => n%1000 = c
+        minute = (n - c*1000)%60 = m
+        hour = (n-c*1000 - m*60)%60 = h*/
+    private double centiSec = dSecondsElapsed%1000;
+    private double minutes = (dSecondsElapsed - centiSec*1000)%60;
+    private double hours = (dSecondsElapsed - centiSec*1000 - minutes*60)%60;
     private boolean digitalIsRunning;
     public Timeline digitalTimeline;
     public KeyFrame digitalKeyFrame;
 
     public Bbt28MVCStopwatch_DigitalModel() 
     {
-        this.dSecondsElapsed = dSecondsElapsed;
-        this.dTimeInSeconds = dTimeInSeconds;
-        this.dAngleDeltaPerSecond = dAngleDeltaPerSecond;
-        this.digitalTimeline = digitalTimeline;
-        this.digitalKeyFrame = digitalKeyFrame;
+        
     }
 
-    public double getdSecondsElapsed() {
+    public double getdSecondsElapsed() 
+    {
         return dSecondsElapsed;
     }
 
-    public void setdSecondsElapsed(double dSecondsElapsed) {
+    public void setdSecondsElapsed(double dSecondsElapsed) 
+    {
         this.dSecondsElapsed = dSecondsElapsed;
     }
 
-    public double getdTimeInSeconds() {
+    public double getdTimeInSeconds() 
+    {
         return dTimeInSeconds;
     }
 
-    public void setdTimeInSeconds(double dTimeInSeconds) {
+    public void setdTimeInSeconds(double dTimeInSeconds) 
+    {
         this.dTimeInSeconds = dTimeInSeconds;
     }
 
-    public double getdAngleDeltaPerSecond() {
-        return dAngleDeltaPerSecond;
-    }
-
-    public void setdAngleDeltaPerSecond(double dAngleDeltaPerSecond) {
-        this.dAngleDeltaPerSecond = dAngleDeltaPerSecond;
-    }
-
-    public Timeline getDigitalTimeline() {
+    public Timeline getDigitalTimeline() 
+    {
         return digitalTimeline;
     }
 
-    public void setDigitalTimeline(Timeline digitalTimeline) {
+    public void setDigitalTimeline(Timeline digitalTimeline) 
+    {
         this.digitalTimeline = digitalTimeline;
     }
 
-    public KeyFrame getDigitalKeyFrame() {
+    public KeyFrame getDigitalKeyFrame() 
+    {
         return digitalKeyFrame;
     }
 
@@ -76,23 +76,22 @@ public class Bbt28MVCStopwatch_DigitalModel
         this.digitalKeyFrame = digitalKeyFrame;
     }
 
-    public boolean isDigitalIsRunning() {
+    public boolean isDigitalIsRunning() 
+    {
         return digitalIsRunning;
     }
 
-    public void setDigitalIsRunning(boolean digitalIsRunning) {
+    public void setDigitalIsRunning(boolean digitalIsRunning) 
+    {
         this.digitalIsRunning = digitalIsRunning;
     }
     
-    
-    
     public void updateDigital(Label digitalLabel)
 {
-    digitalLabel = new Label();
     int i = 0;
-    i++;
     dSecondsElapsed += dTimeInSeconds;
-    digitalLabel.setText(String.valueOf(i));
+    String value = String.valueOf(i++);
+    digitalLabel.setText(value);
 }
 
 public void setupDigitalTime(Label label)
