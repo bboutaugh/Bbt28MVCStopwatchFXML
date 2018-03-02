@@ -91,6 +91,7 @@ Label record2Label = new Label();
 Label record3Label = new Label();
 //------------------------------------------------------------------------------
 
+@FXML
 public void startButtonAction(ActionEvent event)
 {
     if(analogModel.isAnalogIsRunning())
@@ -115,6 +116,7 @@ public void startButtonAction(ActionEvent event)
         }
 }
 
+@FXML
 public void recordButtonAction(ActionEvent event)
 {
    
@@ -125,7 +127,7 @@ public void recordButtonAction(ActionEvent event)
         if(recordCheck1)
         {
         recordNum++;
-        record1Label.setText("test1");
+        record1Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
         recordCheck1 = false;
         recordCheck2 = true;
         recordCheck3 = false;
@@ -133,7 +135,7 @@ public void recordButtonAction(ActionEvent event)
         else if(recordCheck2)
         {
             recordNum++;
-            record2Label.setText("test2");
+            record2Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
             recordCheck2 = false;
             recordCheck1 = false;
             recordCheck3 = true;
@@ -141,7 +143,7 @@ public void recordButtonAction(ActionEvent event)
         else if(recordCheck3)
         {
             recordNum++;
-            record3Label.setText("test3");
+            record3Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
             recordCheck3 = false;
             recordCheck2 = false;
             recordCheck1 = true;
