@@ -5,8 +5,12 @@
  */
 package bbt28mvcstopwatchfxml;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 /**
  *
@@ -14,9 +18,11 @@ import javafx.animation.Timeline;
  */
 public class Bbt28MVCStopwatch_DigitalModel 
 {
+   
     private double dSecondsElapsed;
     private double dTimeInSeconds;
     private double dAngleDeltaPerSecond;
+    private boolean digitalIsRunning;
     public Timeline digitalTimeline;
     public KeyFrame digitalKeyFrame;
 
@@ -65,9 +71,37 @@ public class Bbt28MVCStopwatch_DigitalModel
         return digitalKeyFrame;
     }
 
-    public void setDigitalKeyFrame(KeyFrame digitalKeyFrame) {
+    public void setDigitalKeyFrame(KeyFrame digitalKeyFrame) 
+    {
         this.digitalKeyFrame = digitalKeyFrame;
     }
+
+    public boolean isDigitalIsRunning() {
+        return digitalIsRunning;
+    }
+
+    public void setDigitalIsRunning(boolean digitalIsRunning) {
+        this.digitalIsRunning = digitalIsRunning;
+    }
     
+    
+    
+    public void updateDigital(Label digitalLabel)
+{
+    digitalLabel = new Label();
+    int i = 0;
+    i++;
+    dSecondsElapsed += dTimeInSeconds;
+    digitalLabel.setText(String.valueOf(i));
+}
+
+public void setupDigitalTime(Label label)
+{
+       digitalKeyFrame = new KeyFrame(Duration.millis(dTimeInSeconds * 1000), (ActionEvent event) -> {
+            updateDigital(label);
+        });
+        digitalTimeline = new Timeline(digitalKeyFrame);
+        digitalTimeline.setCycleCount(Animation.INDEFINITE);  
+}
     
 }

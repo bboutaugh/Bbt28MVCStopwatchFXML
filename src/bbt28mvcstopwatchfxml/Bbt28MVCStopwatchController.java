@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -26,10 +27,15 @@ import javafx.util.Duration;
  *
  * @author Brad
  */
-public class FXMLDocumentController implements Initializable 
+public class Bbt28MVCStopwatchController implements Initializable 
 {
 Bbt28MVCStopwatch_AnalogModel analogModel = new Bbt28MVCStopwatch_AnalogModel();
 Bbt28MVCStopwatch_DigitalModel digitalModel = new Bbt28MVCStopwatch_DigitalModel();
+
+public void Bbt28MVCStopwatchController()
+{
+    
+}
 
 //Analog Instances//------------------------------------------------------------
 KeyFrame aKeyFrame = analogModel.getAnalogKeyFrame();
@@ -49,6 +55,9 @@ Double dngleDelta = digitalModel.getdAngleDeltaPerSecond();
 
 
  //Containers//-----------------------------------------------------------------
+@FXML
+AnchorPane root = new AnchorPane();
+
 @FXML
 VBox rootContainer = new VBox();
 
@@ -95,52 +104,35 @@ Label record3Label = new Label();
 
 public void startButtonAction(ActionEvent event)
 {
-    aTimeline.play();
-    dTimeline.play();
+    if(analogModel.isAnalogIsRunning())
+        {
+        //Stop Action
+        startButton.setText("Start");
+        recordButton.setText("Reset");
+        digitalModel.digitalTimeline.stop();
+        analogModel.analogTimeline.stop();
+        analogModel.setAnalogIsRunning(false);
+        }
+        else
+        {
+        //Start Action
+        startButton.setText("Stop");
+        recordButton.setText("Record");
+        analogModel.analogTimeline.play();
+        digitalModel.digitalTimeline.play();
+        analogModel.setAnalogIsRunning(true);
+        }
 }
 
 public void recordButtonAction(ActionEvent event)
 {
     
 }
-
-public void updateAnalog()
-{
-        aSecondsElapsed += aTimeSeconds;
-        double rotation = aSecondsElapsed * aAngleDelta;
-        hand.setRotate(rotation);
-}
-public void setupAnalogTime()
-{
-        aKeyFrame = new KeyFrame(Duration.millis(aTimeSeconds * 1000), (ActionEvent event) -> {
-            updateAnalog();
-        });
-        aTimeline = new Timeline(aKeyFrame);
-        aTimeline.setCycleCount(Animation.INDEFINITE);
-}
-
-public void updateDigital()
-{
-    int i = 0;
-    i++;
-    dSecondsElapsed += dTimeSeconds;
-    digitalDisplayLabel.setText(String.valueOf(i));
-}
-
-public void setupDigitalTime()
-{
-       dKeyFrame = new KeyFrame(Duration.millis(dTimeSeconds * 1000), (ActionEvent event) -> {
-            updateDigital();
-        });
-        dTimeline = new Timeline(dKeyFrame);
-        dTimeline.setCycleCount(Animation.INDEFINITE);  
-}
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-    
-    setupAnalogTime();
-
+     analogModel.setupAnalogTime(hand);
+     digitalModel.setupDigitalTime(digitalDisplayLabel);
     }    
     
 }
