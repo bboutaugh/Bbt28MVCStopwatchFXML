@@ -31,7 +31,6 @@ public class Bbt28MVCStopwatch_DigitalModel
         this.stopTime = stopTime;
     }
     private String stopTime;
-    int i = 0;
     DecimalFormat decimalFormat = new DecimalFormat("##");
     /*Elapsed Seconds = n => n%1000 = c
         minute = (n - c*1000)%60 = m
@@ -39,6 +38,30 @@ public class Bbt28MVCStopwatch_DigitalModel
     private double centiSec;
     private double seconds;
     private double minutes;
+
+    public double getCentiSec() {
+        return centiSec;
+    }
+
+    public void setCentiSec(double centiSec) {
+        this.centiSec = centiSec;
+    }
+
+    public double getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(double seconds) {
+        this.seconds = seconds;
+    }
+
+    public double getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(double minutes) {
+        this.minutes = minutes;
+    }
     private String sCentiSec;
     private String sSeconds;
     private String sMinutes;
@@ -103,28 +126,55 @@ public class Bbt28MVCStopwatch_DigitalModel
     
     public void updateDigital(Label digitalLabel)
 {
-    
+    //centiseconds calculation and display//////
     dSecondsElapsed += dTimeInSeconds;
-    centiSec = (int)dSecondsElapsed*100%1000;
-     if(centiSec>100.0)
+    centiSec = dSecondsElapsed*100%100;
+    centiSec = (int)centiSec;
+     if(centiSec>100)
     {
-        centiSec=0.0;
+        centiSec=0;
     }
-    sCentiSec = String.valueOf(centiSec).substring(0,2);
+     if(centiSec<10)
+     {
+         sCentiSec = "0" + (String.valueOf(centiSec)).substring(0,1);
+     }
+     else if(centiSec > 10)
+     {
+    sCentiSec = (String.valueOf(centiSec)).substring(0,2);
+     }
+    ////////////////////////////////////////////
     
+    //seconds calculation and display///////////
     seconds = (int)dSecondsElapsed%60;
        if(seconds>60)
     {
         seconds = 0;
     }
-    sSeconds = String.valueOf(dSecondsElapsed).substring(0,2);
-     if(minutes >60)
+    if(seconds < 10)
+    {
+        sSeconds = "0" + String.valueOf(dSecondsElapsed).substring(0,1);
+    }
+    else if(seconds > 10)
+    {
+    sSeconds = String.valueOf(seconds).substring(0,2);
+    }
+    //////////////////////////////////////////////
+    
+    //minutes calculation and display////////////
+    minutes = (int)dSecondsElapsed/60;
+    if(minutes >60)
     {
         minutes=0;
     }
-    minutes = (int)dSecondsElapsed/60;
-    
+    if(minutes<10)
+    {
+        sMinutes = "0" + String.valueOf(minutes).substring(0,1);
+    }
+    else if(minutes>10)
+    {
     sMinutes = String.valueOf(minutes).substring(0,2);
+    }
+   ///////////////////////////////////////////////
    
     stopTime = sMinutes + ":" + sSeconds + ":" + sCentiSec;
     digitalLabel.setText(stopTime);

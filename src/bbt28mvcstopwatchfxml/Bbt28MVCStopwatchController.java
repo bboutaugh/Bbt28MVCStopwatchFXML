@@ -122,8 +122,8 @@ public void recordButtonAction(ActionEvent event)
    
  if(analogModel.isAnalogIsRunning())
         {
+            
         //Record Action
-       
         if(recordCheck1)
         {
         recordNum++;
@@ -160,14 +160,16 @@ public void recordButtonAction(ActionEvent event)
         recordCheck1=true;
         recordCheck2=false;
         recordCheck3=false;
-        }
+        digitalModel.setCentiSec(0);
+        digitalModel.setMinutes(0);
+        digitalModel.setSeconds(0);
+               }
+}//End Record Button Action
 
-}
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
      analogModel.setupAnalogTime(hand);
      digitalModel.setupDigitalTime(digitalDisplayLabel);
-    }    
-    
-}
+    }     
+}//End Controller Class
