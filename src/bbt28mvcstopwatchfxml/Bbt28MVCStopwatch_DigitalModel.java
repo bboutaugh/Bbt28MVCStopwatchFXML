@@ -22,23 +22,51 @@ public class Bbt28MVCStopwatch_DigitalModel
    
     private double dSecondsElapsed = 0.0;
     private double dTimeInSeconds = 0.001;
-
-    public String getStopTime() {
+    private String stopTime;
+    private int recordNum = 0;
+    private boolean recordCheck1 = true;
+    private boolean recordCheck2 = false;
+    private boolean recordCheck3 = false;
+    private boolean firstAccountReceived = false;
+    private double recordedSecondsElapsed;
+    private double centiRecord;
+    private double secondsRecord;
+    private double minutesRecord;
+    private String recordTime;
+    
+    public String getStopTime() 
+    {
         return stopTime;
     }
 
-    public void setStopTime(String stopTime) {
+    public void setStopTime(String stopTime) 
+    {
         this.stopTime = stopTime;
     }
-    private String stopTime;
-    DecimalFormat decimalFormat = new DecimalFormat("##");
+    
+   
     /*Elapsed Seconds = n => n%1000 = c
         minute = (n - c*1000)%60 = m
         hour = (n-c*1000 - m*60)%60 = h*/
     private double centiSec;
     private double seconds;
     private double minutes;
+    private String sCentiSec;
+    private String sSeconds;
+    private String sMinutes;
+    private boolean digitalIsRunning;
+    public Timeline digitalTimeline;
+    public KeyFrame digitalKeyFrame;
+    private String sRecordedCenti;
+    private String sRecordedSec;
+    private String sRecordedMin;
 
+    public Bbt28MVCStopwatch_DigitalModel() 
+    {
+        
+    }
+    
+    
     public double getCentiSec() {
         return centiSec;
     }
@@ -61,17 +89,6 @@ public class Bbt28MVCStopwatch_DigitalModel
 
     public void setMinutes(double minutes) {
         this.minutes = minutes;
-    }
-    private String sCentiSec;
-    private String sSeconds;
-    private String sMinutes;
-    private boolean digitalIsRunning;
-    public Timeline digitalTimeline;
-    public KeyFrame digitalKeyFrame;
-
-    public Bbt28MVCStopwatch_DigitalModel() 
-    {
-        
     }
 
     public double getdSecondsElapsed() 
@@ -128,6 +145,7 @@ public class Bbt28MVCStopwatch_DigitalModel
 {
     //centiseconds calculation and display//////
     dSecondsElapsed += dTimeInSeconds;
+    recordedSecondsElapsed += dTimeInSeconds;
     centiSec = dSecondsElapsed*100%100;
     centiSec = (int)centiSec;
      if(centiSec>100)
@@ -178,6 +196,7 @@ public class Bbt28MVCStopwatch_DigitalModel
    
     stopTime = sMinutes + ":" + sSeconds + ":" + sCentiSec;
     digitalLabel.setText(stopTime);
+   
 }
 
 public void setupDigitalTime(Label label)
@@ -188,47 +207,210 @@ public void setupDigitalTime(Label label)
         digitalTimeline = new Timeline(digitalKeyFrame);
         digitalTimeline.setCycleCount(Animation.INDEFINITE);  
 }
+
+/*public void recordTime(Label recordLabel)
+{
+  //centiseconds calculation and display//////
+    //store current time into a variable
+    //subtract current time from stored time
+    //set difference into label
+    if(firstAccountReceived == false)
+    {
+    centiRecord = recordedSecondsElapsed*100%100;
+    centiRecord = (int)centiRecord;
+     if(centiRecord>100)
+    {
+        centiRecord=0;
+    }
+     if(centiRecord<10)
+     {
+         sRecordedCenti = "0" + (String.valueOf(centiRecord)).substring(0,1);
+     }
+     else if(centiRecord > 10)
+     {
+    sRecordedCenti = (String.valueOf(centiRecord)).substring(0,2);
+     }
+    ////////////////////////////////////////////   
     
-}
-/*
-private void updateMonitor()
-{
-getCpu();
-updateAnalog();
-updateDigital();
+     //seconds calculation and display///////////
+    secondsRecord = (int)recordedSecondsElapsed%60;
+       if(secondsRecord>60)
+    {
+        secondsRecord = 0;
+    }
+    if(secondsRecord < 10)
+    {
+        sRecordedSec = "0" + String.valueOf(recordedSecondsElapsed).substring(0,1);
+    }
+    else if(secondsRecord > 10)
+    {
+    sRecordedSec = String.valueOf(secondsRecord).substring(0,2);
+    }
+    //////////////////////////////////////////////
+    
+        //minutes calculation and display////////////
+    minutesRecord = (int)recordedSecondsElapsed/60;
+    if(minutesRecord >60)
+    {
+        minutesRecord=0;
+    }
+    if(minutesRecord<10)
+    {
+        sRecordedMin = "0" + String.valueOf(minutesRecord).substring(0,1);
+    }
+    else if(minutesRecord>10)
+    {
+    sRecordedMin = String.valueOf(minutesRecord).substring(0,2);
+    }
+   ///////////////////////////////////////////////
+   firstAccountReceived = true;
+}//End firstAccountReceived false condition
+    
+    else if(firstAccountReceived == true)
+    {
+    centiRecord = recordedSecondsElapsed*100%100;
+    centiRecord = (int)centiRecord;
+    centiRecord = centiSec - centiRecord;
+     if(centiRecord>100)
+    {
+        centiRecord=0;
+    }
+     if(centiRecord<10)
+     {
+         sRecordedCenti = "0" + (String.valueOf(centiRecord)).substring(0,1);
+     }
+     else if(centiRecord > 10)
+     {
+    sRecordedCenti = (String.valueOf(centiRecord)).substring(0,2);
+     }
+    ////////////////////////////////////////////   
+    
+     //seconds calculation and display///////////
+    secondsRecord = (int)recordedSecondsElapsed%60;
+    secondsRecord = seconds - secondsRecord;
+       if(secondsRecord>60)
+    {
+        secondsRecord = 0;
+    }
+    if(secondsRecord < 10)
+    {
+        sRecordedSec = "0" + String.valueOf(recordedSecondsElapsed).substring(0,1);
+    }
+    else if(secondsRecord > 10)
+    {
+    sRecordedSec = String.valueOf(secondsRecord).substring(0,2);
+    }
+    //////////////////////////////////////////////
+    
+        //minutes calculation and display////////////
+    minutesRecord = (int)recordedSecondsElapsed/60;
+    minutesRecord = minutes - minutesRecord;
+    if(minutesRecord >60)
+    {
+        minutesRecord=0;
+    }
+    if(minutesRecord<10)
+    {
+        sRecordedMin = "0" + String.valueOf(minutesRecord).substring(0,1);
+    }
+    else if(minutesRecord>10)
+    {
+    sRecordedMin = String.valueOf(minutesRecord).substring(0,2);
+    }
+    
+     recordTime = sRecordedMin + ":" + sRecordedSec + ":" + sRecordedCenti;
+    recordLabel.setText(stopTime);
+   ///////////////////////////////////////////////
+}// End Condition for firstAccount Received triggered
+    }//End Record Time Method
 */
-/*
-private PropertyChangeSupport propertyChangeSupport;
-public modelConstructor()
-{
-propertyChangeSupport = new PropertyChangeSupport(this);
-tickTimeInSeconds = 0.1;
-recordNum = 1;
-}
-
- public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public boolean isFirstAccountReceived() {
+        return firstAccountReceived;
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    public void setFirstAccountReceived(boolean firstAccountReceived) {
+        this.firstAccountReceived = firstAccountReceived;
     }
 
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    public double getRecordedSecondsElapsed() {
+        return recordedSecondsElapsed;
     }
 
-public void updateAnalog()
-{
-double oldAngle = angle;
-angle = calculateRotation();
-System.out.println("Angle: " + angle);
-firePropertyChange("Analog",oldAngle,angle);
-}
+    public void setRecordedSecondsElapsed(double recordedSecondsElapsed) {
+        this.recordedSecondsElapsed = recordedSecondsElapsed;
+    }
 
-public void propertyChange(PropertyChangeEvent evt)
-{
-System.out.println();
-}
-*/
+    public double getCentiRecord() {
+        return centiRecord;
+    }
 
+    public void setCentiRecord(double centiRecord) {
+        this.centiRecord = centiRecord;
+    }
+
+    public double getSecondsRecord() {
+        return secondsRecord;
+    }
+
+    public void setSecondsRecord(double secondsRecord) {
+        this.secondsRecord = secondsRecord;
+    }
+
+    public String getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(String recordTime) {
+        this.recordTime = recordTime;
+    }
+
+    public String getsCentiSec() {
+        return sCentiSec;
+    }
+
+    public void setsCentiSec(String sCentiSec) {
+        this.sCentiSec = sCentiSec;
+    }
+
+    public String getsSeconds() {
+        return sSeconds;
+    }
+
+    public void setsSeconds(String sSeconds) {
+        this.sSeconds = sSeconds;
+    }
+
+    public String getsMinutes() {
+        return sMinutes;
+    }
+
+    public void setsMinutes(String sMinutes) {
+        this.sMinutes = sMinutes;
+    }
+
+    public String getsRecordedCenti() {
+        return sRecordedCenti;
+    }
+
+    public void setsRecordedCenti(String sRecordedCenti) {
+        this.sRecordedCenti = sRecordedCenti;
+    }
+
+    public String getsRecordedSec() {
+        return sRecordedSec;
+    }
+
+    public void setsRecordedSec(String sRecordedSec) {
+        this.sRecordedSec = sRecordedSec;
+    }
+
+    public String getsRecordedMin() {
+        return sRecordedMin;
+    }
+
+    public void setsRecordedMin(String sRecordedMin) {
+        this.sRecordedMin = sRecordedMin;
+    }
+
+
+}//End Class

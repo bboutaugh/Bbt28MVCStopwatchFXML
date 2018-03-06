@@ -119,7 +119,7 @@ public void startButtonAction(ActionEvent event)
 @FXML
 public void recordButtonAction(ActionEvent event)
 {
-   
+ 
  if(analogModel.isAnalogIsRunning())
         {
             
@@ -128,6 +128,8 @@ public void recordButtonAction(ActionEvent event)
         {
         recordNum++;
         record1Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
+        //digitalModel.recordTime(record1Label);
+        
         recordCheck1 = false;
         recordCheck2 = true;
         recordCheck3 = false;
@@ -136,6 +138,7 @@ public void recordButtonAction(ActionEvent event)
         {
             recordNum++;
             record2Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
+            //digitalModel.recordTime(record2Label);
             recordCheck2 = false;
             recordCheck1 = false;
             recordCheck3 = true;
@@ -144,11 +147,13 @@ public void recordButtonAction(ActionEvent event)
         {
             recordNum++;
             record3Label.setText("Record " + recordNum + ": " + digitalModel.getStopTime());
+            //digitalModel.recordTime(record3Label);
             recordCheck3 = false;
             recordCheck2 = false;
             recordCheck1 = true;
         }
-        }//End if else statement
+       
+        }//End if statement
         else
         {
         //Reset Action
@@ -160,10 +165,13 @@ public void recordButtonAction(ActionEvent event)
         recordCheck1=true;
         recordCheck2=false;
         recordCheck3=false;
-        digitalModel.setCentiSec(0);
-        digitalModel.setMinutes(0);
-        digitalModel.setSeconds(0);
-               }
+        analogModel.setaSecondsElapsed(0);
+        digitalModel.setdSecondsElapsed(0);
+        digitalModel.setCentiSec(0.0);
+        digitalModel.setMinutes(0.0);
+        digitalModel.setSeconds(0.0);
+        
+        }
 }//End Record Button Action
 
     @Override
